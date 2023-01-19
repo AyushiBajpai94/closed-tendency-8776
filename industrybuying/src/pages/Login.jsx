@@ -1,3 +1,7 @@
+import axios from 'axios';
+import { useContext } from 'react';
+import { AuthContext } from '../Context/AuthContext';
+
 import {
     Flex,
     Box,
@@ -12,8 +16,51 @@ import {
     Text,
     useColorModeValue,
   } from '@chakra-ui/react';
-  import { Link as RouterLink } from 'react-router-dom';
-  export default function  SignIn() {
+import {useState } from 'react';
+  
+  export default function Login() {
+    const{isAuth,setisAuth,login,token}=useContext(AuthContext);
+    const [email,setEmail]=useState('gtatterton0@ehow.com')
+    const[password,setPassword]=useState('Gertrudis Tatterton')
+    const [LoginInfo,setLoginInfo]= useState({})
+
+const handleEmail=(e)=>{
+  setEmail(e.target.value)
+};
+const handlePass=(e)=>{
+  setPassword(e.target.value)
+}
+
+const handleClick=async (e)=>{
+  // setLoginInfo({...LoginInfo,
+  // email:email,
+  //  password:password});
+   e.preventDefault();
+   let Email=e.target.value;
+   let Password=e.target.value;
+   let Info={email:Email,password:Password};
+   try {
+    let res=await fetch(`https://reqres.in/api/login`,{
+      method:"POST",
+      headers:{
+      "Content-type":"application/json"
+      },
+      body:JSON.stringify(Info)
+    });
+    let result=await res.json();
+    if(result.token){
+      login(result.token)
+    }
+   } catch (error) {
+    console.log(error)
+   }
+
+  };
+
+
+
+
+
     return (
       <Flex
         minH={'100vh'}
@@ -33,11 +80,11 @@ import {
             boxShadow={'lg'}
             p={8}>
             <Stack spacing={4}>
-              <FormControl id="email">
+              <FormControl id="email" onChange={handleEmail}>
                 <FormLabel>Email address</FormLabel>
                 <Input type="email" />
               </FormControl>
-              <FormControl id="password">
+              <FormControl id="password" onChange={handlePass}>
                 <FormLabel>Password</FormLabel>
                 <Input type="password" />
               </FormControl>
@@ -47,18 +94,19 @@ import {
                   align={'start'}
                   justify={'space-between'}>
                   <Checkbox>Remember me</Checkbox>
-                  <RouterLink to="/signup"> 
-                     <Link color={'blue.400'}>Forgot password?</Link>
-                  </RouterLink>
+                  <Link color={'blue.400'}>Forgot password?</Link>
                 </Stack>
                 <Button
+                onClick={handleClick}
                   bg={'blue.400'}
                   color={'white'}
                   _hover={{
                     bg: 'blue.500',
+                    
                   }}>
-                  Sign in
+                  Sign in 
                 </Button>
+                {/* <Link href='/signup'>SignUp</Link> */}
               </Stack>
             </Stack>
           </Box>
