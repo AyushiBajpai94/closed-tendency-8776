@@ -30,20 +30,20 @@ export default function Carousel() {
 
   // These are the images used in the slide
   const cards = [
-    'https://www.dollargeneral.com/_jcr_content/root/responsivegrid/responsivegrid/dgcarousel_copy_copy/item_1649589574693.coreimg.100.1200.jpeg/1673629774452/wk51-home-2280x700-hero-desktop-val-candyr1.jpeg',
-    'https://www.dollargeneral.com/_jcr_content/root/responsivegrid/responsivegrid/dgcarousel_copy_copy/item_1667574383955.coreimg.100.1200.jpeg/1673499572004/wk51-home-1140x300-hero-desktop-appsuite.jpeg',
-    'https://www.dollargeneral.com/_jcr_content/root/responsivegrid/responsivegrid/dgcarousel_copy_copy/item_1671569524197.coreimg.100.1200.jpeg/1673629830974/wk51-home-2280x700-hero-desktop-refreshyourbedroomr1.jpeg',
-    "https://tpc.googlesyndication.com/simgad/8525851135069553280",
-    "https://tpc.googlesyndication.com/simgad/15460310567184055584",
+    'https://static3.industrybuying.com/homepage/1673953632Desktop-524xx334-Green-Soul-new.jpg',
+    'https://static3.industrybuying.com/homepage/1674019851Desktop-524xx334-Auto-oprema.jpg',
+    'https://static3.industrybuying.com/homepage/1671432246CP-PLUS-DESKTOP-(524X334).png',
+    'https://static3.industrybuying.com/homepage/1667890944Industrial-buying-524x334-4.jpg',
+    "https://static3.industrybuying.com/homepage/1650877078AGRIPRO.png",
+    "https://static3.industrybuying.com/homepage/1672383942Air-Purifier-Desktop-banner-524x334-2.png",
   ];
 
   return (
     <Box
-      position={'relative'}
+     position={'relative'}
+    //  border='2px solid black'
       height={'400px'}
-    
-     margin={"auto"}
-      width={'500px'}
+      width={'600px'}
       overflow={'hidden'}>
       {/* CSS files for react-slick */}
       <link
@@ -60,6 +60,7 @@ export default function Carousel() {
       {/* Left Icon */}
       <IconButton
         aria-label="left-arrow"
+        variant="ghost"
         colorScheme="messenger"
         borderRadius="full"
         position="absolute"
@@ -73,13 +74,14 @@ export default function Carousel() {
       {/* Right Icon */}
       <IconButton
         aria-label="right-arrow"
+        variant="ghost"
         colorScheme="messenger"
         borderRadius="full"
         position="absolute"
         right={side}
         top={top}
         transform={'translate(0%, -50%)'}
-        zIndex={2}
+        zIndex={1}
         onClick={() => slider?.slickNext()}>
         <BiRightArrowAlt />
       </IconButton>
@@ -91,10 +93,13 @@ export default function Carousel() {
             height={'md'}
             width={"80%"}
             position="relative"
-            backgroundPosition="center"
+            backgroundPosition='center'
             backgroundRepeat="no-repeat"
-            backgroundSize="cover"
+            backgroundSize='100%'
+            backgroundColor='black'
             backgroundImage={`url(${url})`}
+            alignItems='center'
+            p='0px'
           />
         ))}
       </Slider>

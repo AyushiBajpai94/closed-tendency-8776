@@ -2,7 +2,7 @@ import React from "react";
 import Navigate from 'react'
 import  a from '../a.jpg';
 import {Link as RouterLink}  from 'react-router-dom';
-
+import Login from '../pages/Login'
 
 import { SearchIcon,UserIcon} from '@chakra-ui/icons';
 import {
@@ -53,7 +53,7 @@ import {
     const { isOpen, onToggle } = useDisclosure();
   
     return (
-      <Box  border='1px solid red' pos="fixed">
+      <Box  >
         <Flex
           bg={useColorModeValue('blue.900', 'gray.800')}
           color={useColorModeValue('gray.600', 'white')}
@@ -78,7 +78,10 @@ import {
             />
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-            <Image  src={a} width='50px' style={{borderRadius:'50%'}}/>
+            <a href="/">
+            <Image  src={a} width='50px' style={{borderRadius:'50%'}} />
+            </a>
+            
             
             <Stack spacing={4}>
 
@@ -88,7 +91,7 @@ import {
                                  <MenuButton as={Button} h='auto'w={'140px'} borderRadius='1px' bgColor='#DD6B20'  color='white' pl={0} rightIcon={<ChevronDownIcon />}>
                                    All categories
                                  </MenuButton>
-                                 <MenuList>
+                                 <MenuList  zIndex='5'>
                                    <MenuItem>All categories</MenuItem>
                                    <MenuItem>Abrasives</MenuItem>
                                    <MenuItem>Adhesives Sealants and Tape</MenuItem>
@@ -111,7 +114,7 @@ import {
             </Flex>
           </Flex>
   
-          <Stack border='1px solid black'
+          <Stack 
           ml='0px'
           mr='20%'
           w={400}
@@ -122,12 +125,12 @@ import {
                 <AvatarGroup spacing='0.5 rem'  >
                     <Avatar bg='orange.500'  />
                 </AvatarGroup>
-                <RouterLink to='/signin'>
+                <RouterLink to='/signup'>
                         <Button 
                             as={'a'}
                             fontSize={'sm'}
                             fontWeight={400}
-                            // variant={'link'}
+                            //  variant={'link'}
                             href={'#'}>
                             SignIn
                     </Button>
