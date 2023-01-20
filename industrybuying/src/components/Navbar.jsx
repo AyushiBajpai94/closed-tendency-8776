@@ -116,12 +116,12 @@ import {
   
           <Stack 
           ml='0px'
-          mr='20%'
-          w={400}
+          mr='100px'
+          // w={500}
             flex={{ base: 1, md: 0 }}
             justify={'flex-end'}
             direction={'row'}
-            spacing={6}>
+            spacing={2}>
                 <AvatarGroup spacing='0.5 rem'  >
                     <Avatar bg='orange.500'  />
                 </AvatarGroup>
@@ -150,6 +150,19 @@ import {
             </Button>
             </RouterLink>
            
+            <RouterLink to='/admin'>
+                        <Button 
+                            as={'a'}
+                            fontSize={'sm'}
+                            fontWeight={400}
+                            //  variant={'link'}
+                            href={'#'}>
+                            Admin
+                    </Button>
+                </RouterLink>
+
+
+
           </Stack>
         </Flex>
   

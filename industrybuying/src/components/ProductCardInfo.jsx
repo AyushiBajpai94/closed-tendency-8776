@@ -11,18 +11,19 @@ const ProductCardInfo = ({id,image,name,price}) => {
    <RouterLink to={`/product/${id}`}>
    <Card maxW='sm'>
    
-      <CardBody h='200px' >
+      <CardBody >
         <Box h='280px'>
             <Image
             src={image}
             alt={name}
             borderRadius='lg'
+           
             />
         </Box>
         
         <Stack mt='6' >
-            <Box>
-                <Heading size='md'>{name}</Heading>
+            <Box h='150px' pt='10px'>
+                <Heading size='sm'>{name}</Heading>
                 <Text color='orange.600' fontSize='md'>
                     {price}
                 </Text>
