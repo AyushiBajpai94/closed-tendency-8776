@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Image ,Text,Box, GridItem,Grid} from '@chakra-ui/react';
-import { Card, CardHeader, CardBody, CardFooter,Stack,Heading,
-Divider,ButtonGroup,Button } from '@chakra-ui/react'
+import { Grid} from '@chakra-ui/react';
+import{Link as RouterLink} from 'react-router-dom';
+import ProductCardInfo from '../components/ProductCardInfo';
 function Products() {
 
 const[prod,setProd]=React.useState([])
@@ -21,39 +21,20 @@ useEffect(()=>{
 },[]);
 
 // fetchedData()
+
   return (
+    
     <div>
         <Grid templateColumns={`repeat(4, 1fr)`} rowGap={1} ml='2px' mr='2px' mt='10px' >
       {prod.map((el)=>(
         // <GridItem>
-      <Card maxW='sm'  >
-      <CardBody h='200px' >
-        <Image
-          src={el.image}
-          alt={el.name}
-          borderRadius='lg'
-          w="300px"
-          
-        />
-        <Stack mt='6' >
-          <Heading size='md'>{el.name}</Heading>
-          <Text color='blue.600' fontSize='2xl'>
-            {el.price}
-          </Text>
-        </Stack>
-      </CardBody>
-      <Divider />
-      <CardFooter>
-        <ButtonGroup spacing='2'>
-          <Button variant='solid' colorScheme='orange'>
-            Buy now
-          </Button>
-          <Button variant='ghost' colorScheme='orange'>
-            Add to cart
-          </Button>
-        </ButtonGroup>
-      </CardFooter>
-    </Card>
+    
+      <ProductCardInfo
+      id={el.id}
+      image={el.image}
+      name={el.name}
+      price={el.price}/>
+    // </RouterLink>
     // </GridItem>
       ))}
       </Grid>
