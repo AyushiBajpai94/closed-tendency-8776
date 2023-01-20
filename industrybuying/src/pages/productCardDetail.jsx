@@ -2,6 +2,7 @@
 import React, { useEffect} from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import {Link as RouterLink} from 'react-router-dom'
 import {
     Box,
     chakra,
@@ -20,6 +21,13 @@ import {
     List,
     ListItem,
   } from '@chakra-ui/react';
+  import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbSeparator,
+  } from '@chakra-ui/react'
+  import {ChevronRightIcon} from '@chakra-ui/icons'
   import { FaInstagram, FaTwitter, FaYoutube } from 'react-icons/fa';
   import { MdLocalShipping } from 'react-icons/md';
 
@@ -41,10 +49,35 @@ const fetchedData=()=>{
 useEffect(()=>{
     fetchedData()
 },[id]);
+
+
+const handleCart=(cartobj)=>{
+axios.post(`https://mockserver-y04s.onrender.com/cart`,cartobj)
+ .then((res)=>console.log(res))
+ .catch((err)=>console.log(err));
+ console.log("cartdata",cartobj)
+}
+
+
 const{image,name,price}=Data
   return (
     <div>
-      <h1>Product Deatil</h1>
+
+<Breadcrumb fontWeight='medium' fontSize='sm' ml='30px' separator={<ChevronRightIcon color='gray.500' />}>
+  <BreadcrumbItem>
+    <BreadcrumbLink href='/'>Home</BreadcrumbLink>
+  </BreadcrumbItem>
+
+  <BreadcrumbItem>
+    <BreadcrumbLink href='/product'>productcategory</BreadcrumbLink> 
+  </BreadcrumbItem>
+
+  <BreadcrumbItem isCurrentPage>
+    <BreadcrumbLink href='#'>{name}</BreadcrumbLink>
+  </BreadcrumbItem>
+</Breadcrumb>
+
+
       <Container maxW={'7xl'}>
       <SimpleGrid
         columns={{ base: 1, lg: 2 }}
@@ -66,7 +99,7 @@ const{image,name,price}=Data
             <Heading
               lineHeight={1.1}
               fontWeight={600}
-              fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}>
+              fontSize={{ base: '2xl', sm: '4xl', lg: 'xl' }}>
               {name}
             </Heading>
             <Text
@@ -88,7 +121,7 @@ const{image,name,price}=Data
             <VStack spacing={{ base: 4, sm: 6 }}>
               <Text
                 color={useColorModeValue('gray.500', 'gray.400')}
-                fontSize={'2xl'}
+                fontSize={'md'}
                 fontWeight={'300'}>
                 The AgriPro 3 HP Butterfly Rice Mill Machine Without Motor APRM6N is a machinery 
                 that is suitable for small-scale production of rice and millet grains. The model 
@@ -105,7 +138,7 @@ const{image,name,price}=Data
               </Text>
             </VStack>
             <Box>
-              <Text
+              {/* <Text
                 fontSize={{ base: '16px', lg: '18px' }}
                 color={useColorModeValue('yellow.500', 'yellow.300')}
                 fontWeight={'500'}
@@ -125,18 +158,18 @@ const{image,name,price}=Data
                   <ListItem>Chronometer</ListItem>
                   <ListItem>Small seconds</ListItem>
                 </List>
-              </SimpleGrid>
+              </SimpleGrid> */}
             </Box>
             <Box>
-              <Text
+              {/* <Text
                 fontSize={{ base: '16px', lg: '18px' }}
                 color={useColorModeValue('yellow.500', 'yellow.300')}
                 fontWeight={'500'}
                 textTransform={'uppercase'}
                 mb={'4'}>
                 Product Details
-              </Text>
-
+              </Text> */}
+{/* 
               <List spacing={2}>
                 <ListItem>
                   <Text as={'span'} fontWeight={'bold'}>
@@ -181,11 +214,12 @@ const{image,name,price}=Data
                   </Text>{' '}
                   5 bar (50 metres / 167 feet){' '}
                 </ListItem>
-              </List>
+              </List> */}
             </Box>
           </Stack>
-
+          <RouterLink to='/cart'>
           <Button
+          onClick={()=>handleCart(Data)}
             rounded={'none'}
             w={'full'}
             mt={8}
@@ -200,6 +234,7 @@ const{image,name,price}=Data
             }}>
             Add to cart
           </Button>
+          </RouterLink>
 
           <Stack direction="row" alignItems="center" justifyContent={'center'}>
             <MdLocalShipping />
