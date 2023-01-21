@@ -1,99 +1,133 @@
-import React, { useState, useEffect} from "react";
-import { Box } from "@chakra-ui/react";
-import axios from 'axios'
 
-const initstate={
-      title:"",
-      price:"",
-      imageUrl:""
-     };
+import ProductForm from "../components/ProductForm";
+import ProductItem from "../components/ProductItem";
+import Pagination from "../components/Pagination";
+import { useState, useEffect } from "react";
+import { Heading } from "@chakra-ui/react";
 
-function Admin({handleFormSubmit}){
-      const [formState,setFormState] = React.useState(initstate);
-      const[Data,setData]=React.useState([])
+
+const getData = async (url) => {
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    return {
+      totalCount: +res.headers.get(`X-Total-Count`),
+      data,
+    }
+  } catch (error) {
+    console.log("error by me");
+  }
+}
+
+function Admin() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+
+  const fetchAndUpdateData = async (page) => {
+    setLoading(true);
+    try {
+      let res = await getData(`https://mockserver-y04s.onrender.com/products?_page=${page}&_limit=3`);
+      const { totalCount, data } = res;
+      setProducts(data);
+      setTotalCount(totalCount);
+      setLoading(false);
+    } catch (error) {
+      setError(true);
+      setLoading(false);
+    }
+  };
+
+  const handlePageChange = (val) => {
+    const changeBy = page + val;
+    setPage(changeBy);
+  };
+  
+  useEffect(() => {
+    //during mount phase
+    fetchAndUpdateData(page);
+  }, [page]);
+
+  const handleFormSubmit = (formData) => {
+    setLoading(true);
+    fetch(`https://mockserver-y04s.onrender.com/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        setLoading(false);
+        fetchAndUpdateData(page);
+      })
+      .catch((err) => {
+        setError(true);
+        setLoading(false);
+      });
+
       
-      const getData=()=>{
-        return axios({
-            method:'get',
-            url:`https://mockserver-y04s.onrender.com/products?_limit=3`
-        })
-    };
-
-const fetchedData=()=>{
-    getData().then((res)=>setData(res.data))
+  }
+  const handledelete= async(id)=>{
+      try {
+            const deletData=  await fetch(`https://mockserver-y04s.onrender.com/products/${id}`,{
+              method:"DELETE",
+              headers:{
+                "Content-Type":'application/json',
+              }
+            });
+            if(deletData.ok){
+              const data1=await deletData.json();
+              fetchAndUpdateData(page);
+              console.log(data1)
+            }
+          } catch (err) {
+            setError(true)
+          }
 };
+  
 
-useEffect(()=>{
-    fetchedData()
-},[]);
+  return loading ? (<h1>loading...</h1>) : error ?
+    (<h1>Something went wrong .. please refresh</h1>)
+    :
+    (<div className="App">
+      <ProductForm handleFormSubmit={handleFormSubmit} />
+      <hr />
+      <br />
+      <br />
+      <div id="products-display">
+        <Heading >Products</Heading>
+        <div
+           style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(3,1fr)",
+            margin: "25px",
+            gap: "20px",
+          }}
+        >
 
-      const handleChange=(e)=>{
-            //  e.preventDefault(); //when we submit the form it prevents the default behaivour
-            const {name,value}=e.target;
-            setFormState({
-              ...formState,
-              [name]:value,
-             });
-            };
-            const handleSubmit=()=>{}
-console.log(formState)
-// const handleSubmit=(e)=>{
-//       e.preventDefault();
-//       handleFormSubmit(formState);
-//       setFormState(initstate);
-// };
-const {title,price,imageUrl}=formState;
-      return(<>
-      <h1>Adimn Page</h1>
-            <div id='product-creation-form' style={{border:'1px solid Red', width:'40%',margin:'auto',paddingTop:'10px',paddingBottom:'20px'}}>
-                  <form onSubmit={handleSubmit}> 
-                        <label>
-                              Title:
-                              <input 
-                              name='title'
-                              type="text" placeholder='Enter product Title'
-                              value={title}
-                              onChange={handleChange}
-                              />
-                        </label>
-                        <br/>
-                        <br/>
-                        <label>
-                              Price:
-                              <input 
-                              name='price'
-                              type="number" placeholder='Enter product Price'
-                              value={price}
-                              onChange={handleChange}
-                              />
-                        </label>
-                        <br/>
-                        <br/>
-                        <label>
-                              Imageurl:
-                              <input 
-                              name='imageUrl'
-                              type="text" placeholder='Enter product Image'
-                              value={imageUrl}
-                              onChange={handleChange}
-                              />
-                        </label>
-                        <br/>
-                        <br/>
-                        <label>
-                              <input type="submit" value="Add Product"  />
-                        </label>
-                  </form>
-            </div>
-            <div style={{border:'1px solid black',height:'300px',display:'grid',gridTemplateColumns:'repeat(4,1fr'}} >
-                {Data.map((el)=>(
-                    <Box key={el.id}>
-                        <img src={el.image} width='200px'/>
-                    </Box>
-                ))}
-            </div>
-            </>
-      )
+          {products.map((prod) => (
+            <ProductItem key={prod.id}
+              id={prod.id}
+              name={prod.name}
+              price={prod.price}
+              image={prod.image}
+              handledelete={handledelete}
+             
+               />
+          ))}
+        </div>
+      </div>
+      <Pagination
+        page={page}
+        handlePageChange={handlePageChange}
+        totalCount={totalCount}
+      />
+    </div>
+    );
 }
 
 export default Admin;

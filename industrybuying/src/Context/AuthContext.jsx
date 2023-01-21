@@ -6,11 +6,11 @@ export default function AuthContextProvider({children}){
     const[isAuth,setisAuth]=useState(false);
     const[token,setToken]=useState('')
    const login=(a)=>{
-    setisAuth(true)
-    setToken(a)
+       setisAuth(true)
+        setToken(a)
    }
 
     return(
-        <AuthContext.Provider value={{isAuth,setisAuth,login,token}}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{isAuth,setisAuth,login,token,setToken}}>{children}</AuthContext.Provider>
     )
 }
