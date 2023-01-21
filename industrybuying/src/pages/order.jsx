@@ -8,7 +8,8 @@ import {
     useColorModeValue as mode,
   } from '@chakra-ui/react'
   import * as React from 'react'
-  import { FaArrowRight } from 'react-icons/fa'
+  import { FaArrowRight } from 'react-icons/fa';
+  import {Link as Routerlink} from 'react-router-dom';
 
   const OrderSummaryItem = (props) => {
     const { label, value, children } = props
@@ -24,11 +25,11 @@ import {
   
   export const CartOrderSummary = () => {
     return (
-      <Stack spacing="8" borderWidth="1px" rounded="lg" padding="8" width="full">
+      <Stack spacing="8" borderWidth="1px" rounded="lg" padding="1" width="full">
         <Heading size="md">Order Summary</Heading>
   
         <Stack spacing="6">
-          <OrderSummaryItem label="Subtotal" value={(597)} />
+          <OrderSummaryItem label="Subtotal" value={(11800)} />
           <OrderSummaryItem label="Shipping + Tax">
             <Link href="#" textDecor="underline">
               Calculate shipping
@@ -48,12 +49,14 @@ import {
             </Text>
           </Flex>
         </Stack>
+        <Routerlink to='/payment'>
         <Button fontSize={'sm'}
               rounded={'full'}
               bgColor='orange.500'
               _focus={{
                 bgColor: 'orange.400',
               }}>Checkout</Button>
+              </Routerlink>
       </Stack>
     )
   }

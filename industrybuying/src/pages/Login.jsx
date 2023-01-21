@@ -1,72 +1,74 @@
-import axios from 'axios';
-import { useContext } from 'react';
-import { AuthContext } from '../Context/AuthContext';
-
+import React from 'react'
+import { useState } from 'react';
+import { useContext } from 'react'
+import {AuthContext} from '../Context/AuthContext';
+import { Navigate} from 'react-router-dom';
 import {
-    Flex,
-    Box,
-    FormControl,
-    FormLabel,
-    Input,
-    Checkbox,
-    Stack,
-    Link,
-    Button,
-    Heading,
-    Text,
-    useColorModeValue,
-  } from '@chakra-ui/react';
-import {useState } from 'react';
-  
-  export default function Login() {
-    const{isAuth,setisAuth,login,token}=useContext(AuthContext);
-    const [email,setEmail]=useState('gtatterton0@ehow.com')
-    const[password,setPassword]=useState('Gertrudis Tatterton')
-    const [LoginInfo,setLoginInfo]= useState({})
+      Flex,
+      Box,
+      FormControl,
+      FormLabel,
+      Input,
+      Checkbox,
+      Stack,
+      Link,
+      Button,
+      Heading,
+      Text,
+      useColorModeValue,
+    } from '@chakra-ui/react';
+function Login(){
+const {setToken,login,isAuth}=useContext(AuthContext);
+const[email,setEmail]=useState("");
+const[password,setPassword]=useState("");
+
+
+
 
 const handleEmail=(e)=>{
-  setEmail(e.target.value)
+setEmail(e.target.value)
 };
-const handlePass=(e)=>{
+const handlePassword=(e)=>{
   setPassword(e.target.value)
-}
-
-const handleClick=async (e)=>{
-  // setLoginInfo({...LoginInfo,
-  // email:email,
-  //  password:password});
-   e.preventDefault();
-   let Email=e.target.value;
-   let Password=e.target.value;
-   let Info={email:Email,password:Password};
-   try {
-    let res=await fetch(`https://reqres.in/api/login`,{
-      method:"POST",
-      headers:{
-      "Content-type":"application/json"
-      },
-      body:JSON.stringify(Info)
-    });
-    let result=await res.json();
-    if(result.token){
-      login(result.token)
-    }
-   } catch (error) {
-    console.log(error)
-   }
-
   };
 
 
+  const handleClick=()=>{
+    const userDetail={
+      email,password
+    };
+    fetchLoginData(userDetail);
+     
+  } ;
+  if(isAuth){
+    return <Navigate to="/"/>
+   };
+  const fetchLoginData=(obj)=>{
+    return fetch(`https://reqres.in/api/login`,{
+      method:"POST",
+      body:JSON.stringify(obj),
+      headers:{
+        "Content-Type":"application/json"
+      },
+    }).then((res)=>res.json()).then((data)=>{
+      setToken(data.token);
+      login();
+    })
+  };
+  
 
 
 
-    return (
-      <Flex
+
+
+     return <>
+
+     <h3>Login from here..</h3>
+     <Flex
         minH={'100vh'}
         align={'center'}
         justify={'center'}
-        bg={useColorModeValue('gray.50', 'gray.800')}>
+       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>
             <Heading fontSize={'4xl'}>Sign in to your account</Heading>
@@ -76,7 +78,6 @@ const handleClick=async (e)=>{
           </Stack>
           <Box
             rounded={'lg'}
-            bg={useColorModeValue('white', 'gray.700')}
             boxShadow={'lg'}
             p={8}>
             <Stack spacing={4}>
@@ -84,7 +85,7 @@ const handleClick=async (e)=>{
                 <FormLabel>Email address</FormLabel>
                 <Input type="email" />
               </FormControl>
-              <FormControl id="password" onChange={handlePass}>
+              <FormControl id="password" onChange={handlePassword}>
                 <FormLabel>Password</FormLabel>
                 <Input type="password" />
               </FormControl>
@@ -112,5 +113,27 @@ const handleClick=async (e)=>{
           </Box>
         </Stack>
       </Flex>
-    );
-  }
+     </>
+     
+     
+ }
+ export default Login;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

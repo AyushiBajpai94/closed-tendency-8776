@@ -6,6 +6,8 @@ import Products from '../pages/products';
 import ProductCardDetail from '../pages/productCardDetail';
 import Cartpage from '../pages/Cartpage';
 import Admin from '../pages/admin';
+import PrivateRoute from '../components/PrivatRoute';
+import PaymentPage from '../pages/payment'
 
 function AllRoutes(){
 return (
@@ -17,7 +19,18 @@ return (
         <Route path='/login' element={<Login />}/>
         <Route path='/product' element={<Products />}/>
         <Route path='/product/:id' element={<ProductCardDetail />}/>
-        <Route path='/cart' element={<Cartpage />} />
+        <Route path='/cart' element={
+            <PrivateRoute>
+                 <Cartpage />
+            </PrivateRoute>
+       
+        } />
+        <Route path='/payment' element={
+            <PrivateRoute>
+                 <PaymentPage />
+            </PrivateRoute>
+       
+        } />
         <Route path='admin' element={<Admin/>}/>
     </Routes>
     
