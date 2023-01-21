@@ -4,6 +4,7 @@ export default function ToastExample() {
     const toast = useToast()
     return (
       <Button
+      bgColor='orange.500'
         onClick={() =>
           toast({
             title: 'Account created.',
